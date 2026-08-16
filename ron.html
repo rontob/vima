@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIMA - Platform Drama Pendek Digital Masa Depan</title>
+  
+  <!-- Font Google: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-card: #151c2e;
+      --bg-card-hover: #1e293b;
+      --accent-purple: #8b5cf6;
+      --accent-magenta: #d946ef;
+      --accent-cyan: #06b6d4;
+      --accent-gold: #eab308;
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-white);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      line-height: 1.6;
+      padding-bottom: 90px; /* Space for sticky footer */
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Header Profile */
+    .profile-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .profile-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.3;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Card Base */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      color: var(--accent-gold);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* Media Images */
+    .banner-img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      display: block;
+      object-fit: cover;
+    }
+
+    /* Carousel */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .carousel-slide {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+      width: 100%;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      flex-shrink: 0;
+      border-radius: var(--radius-md);
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 10px;
+    }
+
+    .carousel-btn {
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Badge & Tag */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ef4444, #f97316);
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    /* Quote Box */
+    .quote-box {
+      border-left: 3px solid var(--accent-cyan);
+      padding-left: 12px;
+      margin: 12px 0;
+      font-style: italic;
+      color: #cbd5e1;
+      font-size: 0.9rem;
+    }
+
+    /* Grid Feature List */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Rebate List */
+    .rebate-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .rebate-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+    }
+
+    .rebate-item b {
+      color: var(--accent-gold);
+    }
+
+    /* Checklist */
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .check-list li {
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* FAQ Details */
+    details {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    summary {
+      padding: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: '＋';
+      color: var(--accent-purple);
+      font-size: 1.1rem;
+    }
+
+    details[open] summary::after {
+      content: '－';
+    }
+
+    details p {
+      padding: 0 14px 14px 14px;
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+      color: white;
+      border: none;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+      animation: pulseGlow 2s infinite;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(217, 70, 239, 0.6);
+    }
+
+    .btn-whatsapp {
+      background: #25d366;
+      color: white;
+    }
+
+    .btn-whatsapp:hover {
+      background: #20ba5a;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+      50% { box-shadow: 0 0 25px rgba(217, 70, 239, 0.7); }
+      100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+    }
+
+    /* Sticky Bottom CTA */
+    .sticky-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      background: rgba(11, 15, 25, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+
+    .sticky-footer-inner {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Contact Card */
+    .contact-card {
+      text-align: center;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .contact-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-top: 4px;
+    }
+
+    .contact-wa {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. HEADER PROFILE -->
+    <header class="profile-header">
+      <div class="avatar-wrapper">
+        <img class="avatar-img" src="https://bioqu.id/uploads/avatars/492c0085ee1c82b32da0d6e63e912444.png" alt="VIMA Logo" />
+      </div>
+      <h1 class="profile-title">VIMA HADIR! PLATFORM DRAMA PENDEK DIGITAL MASA DEPAN!</h1>
+      <p class="profile-subtitle">VIMA hadir membawa inovasi ekosistem drama pendek digital yang siap berkembang di Indonesia dan Asia.</p>
+    </header>
+
+    <!-- 2. BANNERS -->
+    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/79a316ffa5ba635b6696d6bfb668414e.jpg" alt="VIMA Banner 1" />
+    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/7bcc97179542c7c1dc3a34ace3965c72.jpg" alt="VIMA Banner 2" />
+
+    <!-- 3. CAROUSEL SLIDER -->
+    <div class="carousel-container">
+      <div class="carousel-slide" id="carouselSlide">
+        <img src="https://bioqu.id/uploads/galleries/2370708/44d7c9d789fb771311ceea10f7fc5287.jpg" alt="Slide 1" />
+        <img src="https://bioqu.id/uploads/galleries/2370708/063722fe12a9b72860da24da58b38e6b.jpg" alt="Slide 2" />
+        <img src="https://bioqu.id/uploads/galleries/2370708/c89c805adff883c96a796b167603e84f.jpg" alt="Slide 3" />
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" onclick="moveSlide(-1)">❮</button>
+        <button class="carousel-btn" onclick="moveSlide(1)">❯</button>
+      </div>
+    </div>
+
+    <!-- 4. REVOLUSI INDUSTRI -->
+    <div class="card">
+      <h2>Revolusi Baru Industri Drama Pendek Digital Indonesia</h2>
+      <h3>"Dari Indonesia untuk Asia, dari Asia untuk Dunia."</h3>
+      <p>Selamat datang di era baru industri hiburan digital! <b>VIMA</b> hadir sebagai platform ekosistem drama pendek digital yang menggabungkan teknologi, kreativitas, dan komunitas dalam satu inovasi yang siap berkembang di Indonesia dan Asia.</p>
+      <p>Di tengah pesatnya pertumbuhan industri konten digital, VIMA hadir membawa visi besar untuk mendukung para kreator dan menghadirkan pengalaman hiburan yang lebih modern, interaktif, dan bernilai.</p>
+    </div>
+
+    <!-- 5. HOT NEWS -->
+    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/a9098e2607981d23a4e992b6d2bb3b68.jpg" alt="VIMA Media Cover" />
+    
+    <div class="card">
+      <span class="badge">HOT NEWS!</span>
+      <h2>VIMA DILIPUT MEDIA NASIONAL INDONESIA</h2>
+      <p>VIMA mendapatkan perhatian dari media nasional sebagai platform digital yang fokus membangun ekosistem drama pendek berbasis inovasi dan teknologi.</p>
+      <div class="quote-box">
+        "Saat dunia bergerak menuju ekonomi kreatif digital, VIMA hadir untuk menjadi bagian dari perubahan tersebut."
+      </div>
+    </div>
+
+    <!-- 6. TENTANG VIMA -->
+    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/3580b5e039a58ff3d9ab80211a215099.jpg" alt="Tentang VIMA" />
+    
+    <div class="card">
+      <h2>Tentang VIMA</h2>
+      <p>VIMA merupakan platform digital yang berfokus pada pengembangan ekosistem drama pendek digital yang mengintegrasikan teknologi, kreativitas, dan komunitas dalam satu inovasi modern.</p>
+      
+      <div class="feature-grid">
+        <div class="feature-item">💻 Teknologi Digital</div>
+        <div class="feature-item">🎬 Industri Kreatif</div>
+        <div class="feature-item">🤝 Komunitas</div>
+        <div class="feature-item">🚀 Inovasi Konten</div>
+      </div>
+      <p style="margin-top: 12px;">VIMA memiliki visi untuk menghadirkan platform hiburan digital yang mampu bersaing di tingkat Indonesia, Asia, hingga pasar global.</p>
+    </div>
+
+    <!-- 7. SENIOR OFFICER -->
+    <div class="card" style="text-align: center;">
+      <span class="badge" style="background: linear-gradient(90deg, #6366f1, #a855f7);">SENIOR OFFICER</span>
+      <img src="https://bioqu.id/uploads/galleries/2371718/46e3c73e3022ca2d78b7501bae1c5287.jpg" alt="Dong Hyun" class="banner-img" style="margin: 12px 0;" />
+      <h2 style="justify-content: center;">DONG HYUN</h2>
+      <p style="color: var(--accent-gold); font-weight: 600;">Owner VIMA & Senior Officer</p>
+    </div>
+
+    <!-- 8. MENGAPA MEMILIH VIMA & PELUANG -->
+    <div class="card">
+      <h2>Mengapa Memilih VIMA?</h2>
+      <ul class="check-list">
+        <li>🚀 <b>Inovasi Tanpa Batas:</b> Pengalaman hiburan modern mengikuti teknologi masa depan.</li>
+        <li>🤝 <b>Ekosistem Kuat:</b> Kolaborasi antara kreator, komunitas, dan teknologi.</li>
+        <li>📈 <b>Pertumbuhan Pesat:</b> Industri konten digital yang membuka berbagai peluang baru.</li>
+        <li>🌏 <b>Siap Go International:</b> Membawa konten lokal Indonesia ke pasar Asia & Global.</li>
+      </ul>
+    </div>
+
+    <!-- 9. SKEMA BONUS REBATE -->
+    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/055a7374836a6ae79102830e7d771b00.jpg" alt="Bonus VIMA" />
+    
+    <div class="card">
+      <h2>💰 BONUS REBATE DOWNLINE VIMA</h2>
+      <p>Setiap kali downline Anda memperoleh coin dari aktivitas mereka, Anda juga akan mendapatkan <b>Bonus Rebate Otomatis</b> sesuai level jaringan.</p>
+      
+      <div class="rebate-list">
+        <div class="rebate-item"><span>👑 Level 1</span> <b>5% Rebate</b></div>
+        <div class="rebate-item"><span>👑 Level 2</span> <b>3% Rebate</b></div>
+        <div class="rebate-item"><span>👑 Level 3</span> <b>2% Rebate</b></div>
+        <div class="rebate-item"><span>👑 Level 4 - 8</span> <b>1% Rebate</b></div>
+      </div>
+
+      <ul class="check-list">
+        <li>✅ Bonus otomatis setiap hari</li>
+        <li>✅ Penghasilan tambahan dari aktivitas downline</li>
+        <li>✅ Sistem transparan & real-time</li>
+        <li>✅ Tanpa batas potensi penghasilan</li>
+      </ul>
+    </div>
+
+    <!-- 10. FAQ SECTION -->
+    <div class="card">
+      <h2>Frequently Asked Questions (FAQ)</h2>
+      
+      <details>
+        <summary>Apakah VIMA legal?</summary>
+        <p>Silakan merujuk pada informasi resmi yang disediakan oleh VIMA melalui website dan kanal komunikasi resminya untuk mengetahui informasi terbaru mengenai legalitas dan operasional perusahaan.</p>
+      </details>
+
+      <details>
+        <summary>Apakah VIMA cocok untuk pemula?</summary>
+        <p>Ya. VIMA dapat menjadi sarana untuk mengenal perkembangan industri hiburan digital dan ekonomi kreatif modern.</p>
+      </details>
+
+      <details>
+        <summary>Apakah VIMA hanya untuk kreator?</summary>
+        <p>Tidak. VIMA terbuka untuk berbagai kalangan yang memiliki minat terhadap perkembangan dunia digital, baik kreator konten, entrepreneur, maupun komunitas digital.</p>
+      </details>
+    </div>
+
+    <!-- 11. KONTAK & BIMBINGAN -->
+    <div class="card contact-card">
+      <img src="https://bioqu.id/uploads/galleries/2076002/cf4cf338954c6626819bdcde5baa6762.png" class="banner-img" alt="Bimbingan" />
+      <p style="margin-top: 10px;">Untuk <b>bimbingan & konsultasi</b>, silakan hubungi kami:</p>
+      <div class="contact-name">Jolin Manalang</div>
+      <div class="contact-wa">WA : 0823-4792-9491</div>
+      
+      <a href="https://wa.me/6282347929491?text=Halo%20Jolin,%20saya%20ingin%20konsultasi%20mengenai%20VIMA" target="_blank" class="btn btn-whatsapp" style="margin-top: 14px;">
+        💬 CHAT VIA WHATSAPP
+      </a>
+    </div>
+
+    <!-- 12. SALURAN OFFICIAL -->
+    <div class="card" style="text-align: center;">
+      <h2>📢 OFFICIAL CHANNEL</h2>
+      <p>Ikuti Saluran VIMA di WhatsApp untuk mendapatkan update resmi dan informasi terbaru.</p>
+      <a href="https://whatsapp.com/channel/0029VbEhBJyIXnllwWOvwW1R" target="_blank" class="btn btn-whatsapp" style="margin-top: 12px; background: #075e54;">
+        ◉ IKUTI SALURAN VIMA ➔
+      </a>
+    </div>
+
+    <!-- 13. REGISTER CTA CARD -->
+    <div class="card" style="text-align: center; background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2)); border: 1px solid var(--accent-purple);">
+      <h2>GRATIS REGISTRASI!</h2>
+      <p>Bergabung bersama VIMA hari ini dan jadilah bagian dari ekosistem drama pendek digital yang berkembang di Indonesia, Asia, dan Dunia.</p>
+      <a href="https://vima.now/register?ref=WVLIYXX2ZY" target="_blank" class="btn btn-primary" style="margin-top: 12px;">
+        🚀 DAFTAR SEKARANG KLIK DISINI
+      </a>
+    </div>
+
+    <!-- FOOTER BANNER -->
+    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/ec8f1aab27e4f84ce90ca7b12a6d2ee7.jpg" alt="VIMA Footer" />
+
+  </div>
+
+  <!-- STICKY BOTTOM BUTTON FOR MOBILE -->
+  <div class="sticky-footer">
+    <div class="sticky-footer-inner">
+      <a href="https://vima.now/register?ref=WVLIYXX2ZY" target="_blank" class="btn btn-primary">
+        🚀 DAFTAR VIMA SEKARANG
+      </a>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT FOR CAROUSEL SLIDER -->
+  <script>
+    let currentSlide = 0;
+    const slideElement = document.getElementById('carouselSlide');
+    const totalSlides = slideElement.children.length;
+
+    function moveSlide(direction) {
+      currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+      slideElement.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    // Auto Play Carousel every 4 seconds
+    setInterval(() => {
+      moveSlide(1);
+    }, 4000);
+  </script>
+
+</body>
+        </html>
+        
