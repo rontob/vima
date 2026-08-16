@@ -5,25 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VIMA - Platform Drama Pendek Digital Masa Depan</title>
   
-  <!-- Font Google: Plus Jakarta Sans -->
+  <!-- Google Fonts: Cinzel (Serif Mewah Header), Plus Jakarta Sans (Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-main: #0b0f19;
-      --bg-card: #151c2e;
-      --bg-card-hover: #1e293b;
-      --accent-purple: #8b5cf6;
-      --accent-magenta: #d946ef;
-      --accent-cyan: #06b6d4;
-      --accent-gold: #eab308;
-      --text-white: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --radius-lg: 18px;
-      --radius-md: 12px;
+      --bg-main: #0a0a0d;
+      --bg-card: #121319;
+      --bg-card-alt: #181a24;
+      --gold-primary: #f59e0b;
+      --gold-light: #fcd34d;
+      --gold-dark: #b45309;
+      --gold-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      --gold-glow: 0 0 20px rgba(245, 158, 11, 0.25);
+      --border-gold: rgba(245, 158, 11, 0.25);
+      --text-white: #ffffff;
+      --text-muted: #9e9ea7;
+      --radius-lg: 16px;
+      --radius-md: 10px;
     }
 
     * {
@@ -31,6 +32,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -40,268 +42,468 @@
       justify-content: center;
       min-height: 100vh;
       line-height: 1.6;
-      padding-bottom: 90px; /* Space for sticky footer */
+      padding-bottom: 90px;
+      overflow-x: hidden;
     }
 
-    .container {
+    /* Container HP Centered Layout */
+    .app-container {
       width: 100%;
       max-width: 480px;
-      padding: 20px 16px;
+      padding: 0 16px 20px 16px;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    /* Header Profile */
-    .profile-header {
-      text-align: center;
+    /* TOP BAR (Reference vima.now) */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0 10px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 13, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--gold-gradient);
+      clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 70%, 18% 100%, 0% 35%);
+      display: inline-block;
+      box-shadow: var(--gold-glow);
+    }
+
+    .brand-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text-white);
+    }
+
+    .top-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      color: var(--text-white);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    /* EFEK MENGKILAP / SHINE SWEEP ANIMATION */
+    .shine-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine-card::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 60%;
+      height: 300%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.03) 30%,
+        rgba(255, 215, 0, 0.18) 50%,
+        rgba(255, 255, 255, 0.03) 70%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      animation: shineSweep 6s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes shineSweep {
+      0% { left: -120%; top: -100%; }
+      20% { left: 180%; top: 50%; }
+      100% { left: 180%; top: 50%; }
+    }
+
+    /* LAZYLOAD SCROLL REVEAL ANIMATION */
+    .lazy-reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .lazy-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* HERO FEATURED POSTER CARD (Inspirasi Gambar 1) */
+    .hero-poster-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-gold);
+      box-shadow: var(--gold-glow);
+      background: #000;
+      min-height: 480px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin-top: 10px;
+      justify-content: flex-end;
     }
 
-    .avatar-wrapper {
-      position: relative;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      padding: 4px;
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
-      box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
-    }
-
-    .avatar-img {
+    .hero-poster-img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      border-radius: 50%;
       object-fit: cover;
-      background: #000;
+      filter: brightness(0.85);
+      transition: transform 0.5s ease;
     }
 
-    .profile-title {
-      font-size: 1.25rem;
+    .hero-poster-overlay {
+      position: relative;
+      z-index: 3;
+      padding: 24px 20px;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,10,13,0.7) 40%, rgba(10,10,13,0.98) 100%);
+    }
+
+    .badge-pilihan {
+      background: var(--gold-gradient);
+      color: #000;
       font-weight: 800;
-      line-height: 1.3;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: #fff;
       text-transform: uppercase;
-      background: linear-gradient(90deg, #ffffff, #a5b4fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
 
-    .profile-subtitle {
-      font-size: 0.9rem;
-      color: var(--text-muted);
+    .tag-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
     }
 
-    /* Card Base */
-    .card {
+    .tag-pill {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* CAROUSEL SLIDER */
+    .carousel-wrapper {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-gold);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .carousel-slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 100%;
+    }
+
+    .carousel-slides img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+      height: 220px;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      width: 20px;
+      border-radius: 10px;
+      background: var(--gold-primary);
+    }
+
+    /* GENERAL CARDS */
+    .card-box {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border-gold);
       border-radius: var(--radius-lg);
       padding: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
 
-    .card h2 {
-      font-size: 1.2rem;
+    .card-box h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--gold-light);
       margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .card h3 {
-      font-size: 1rem;
-      color: var(--accent-gold);
+    .card-box h3 {
+      font-size: 0.95rem;
+      color: var(--gold-primary);
       margin-bottom: 8px;
     }
 
-    .card p {
-      font-size: 0.9rem;
+    .card-box p {
+      font-size: 0.88rem;
       color: var(--text-muted);
       margin-bottom: 12px;
     }
 
-    /* Media Images */
-    .banner-img {
-      width: 100%;
-      border-radius: var(--radius-md);
-      display: block;
-      object-fit: cover;
-    }
-
-    /* Carousel */
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-    }
-
-    .carousel-slide {
-      display: flex;
-      transition: transform 0.4s ease-in-out;
-      width: 100%;
-    }
-
-    .carousel-slide img {
-      width: 100%;
-      flex-shrink: 0;
-      border-radius: var(--radius-md);
-    }
-
-    .carousel-nav {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-      padding: 0 10px;
-    }
-
-    .carousel-btn {
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-weight: bold;
-      backdrop-filter: blur(4px);
-    }
-
-    /* Badge & Tag */
-    .badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, #ef4444, #f97316);
-      color: white;
-      margin-bottom: 10px;
-    }
-
-    /* Quote Box */
-    .quote-box {
-      border-left: 3px solid var(--accent-cyan);
-      padding-left: 12px;
-      margin: 12px 0;
-      font-style: italic;
-      color: #cbd5e1;
-      font-size: 0.9rem;
-    }
-
-    /* Grid Feature List */
-    .feature-grid {
+    /* GENRE GRID CARDS (Inspirasi Gambar 2) */
+    .genre-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 12px;
+      gap: 12px;
     }
 
-    .feature-item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-color);
+    .genre-card {
       border-radius: var(--radius-md);
-      padding: 12px;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Rebate List */
-    .rebate-list {
+      padding: 16px;
+      min-height: 100px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin: 12px 0;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s, border-color 0.3s;
     }
 
-    .rebate-item {
+    .genre-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold-primary);
+    }
+
+    .genre-card.g1 { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); }
+    .genre-card.g2 { background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); }
+    .genre-card.g3 { background: linear-gradient(135deg, #3f2208 0%, #1a0e03 100%); }
+    .genre-card.g4 { background: linear-gradient(135deg, #4c1d95 0%, #1e1035 100%); }
+    .genre-card.g5 { background: linear-gradient(135deg, #132e4f 0%, #081526 100%); }
+    .genre-card.g6 { background: linear-gradient(135deg, #4a1224 0%, #20060f 100%); }
+
+    .genre-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .genre-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* PAKET & BONUS CARD (Inspirasi Gambar 3 & 4) */
+    .package-card {
+      background: linear-gradient(180deg, #181510 0%, #111116 100%);
+      border: 1.5px solid var(--gold-primary);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--gold-glow);
+      text-align: center;
+    }
+
+    .badge-gold {
+      background: var(--gold-gradient);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 5px 14px;
+      border-radius: 20px;
+      display: inline-block;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .price-text {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin: 10px 0;
+    }
+
+    .price-text span {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* REBATE LIST ITEMS */
+    .rebate-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .rebate-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(139, 92, 246, 0.1);
-      border: 1px solid rgba(139, 92, 246, 0.2);
-      padding: 10px 14px;
+      background: rgba(245, 158, 11, 0.06);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      padding: 12px 16px;
       border-radius: var(--radius-md);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
-    .rebate-item b {
-      color: var(--accent-gold);
-    }
-
-    /* Checklist */
-    .check-list {
-      list-style: none;
+    .rebate-row span {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 8px;
+    }
+
+    .rebate-val {
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+    /* ACCOUNT GRID ITEMS (Inspirasi Gambar 4) */
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       margin-top: 10px;
     }
 
-    .check-list li {
-      font-size: 0.88rem;
-      color: #e2e8f0;
+    .account-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 14px 8px;
+      text-align: center;
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 8px;
+      transition: background 0.3s;
     }
 
-    /* FAQ Details */
+    .account-item:hover {
+      background: var(--bg-card-alt);
+    }
+
+    .account-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-primary);
+      font-size: 1.1rem;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .account-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    /* FAQ ACCORDION */
     details {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-gold);
       border-radius: var(--radius-md);
       margin-bottom: 10px;
       overflow: hidden;
     }
 
     summary {
-      padding: 14px;
+      padding: 14px 16px;
       font-weight: 600;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       list-style: none;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: #f1f5f9;
     }
 
-    summary::-webkit-details-marker {
-      display: none;
-    }
+    summary::-webkit-details-marker { display: none; }
 
     summary::after {
-      content: '＋';
-      color: var(--accent-purple);
-      font-size: 1.1rem;
+      content: '+';
+      color: var(--gold-primary);
+      font-size: 1.2rem;
+      font-weight: bold;
     }
 
     details[open] summary::after {
-      content: '－';
+      content: '−';
     }
 
     details p {
-      padding: 0 14px 14px 14px;
-      margin: 0;
-      font-size: 0.85rem;
+      padding: 0 16px 14px 16px;
+      font-size: 0.84rem;
       color: var(--text-muted);
     }
 
-    /* Buttons */
-    .btn {
+    /* BUTTONS */
+    .btn-gold {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -309,272 +511,215 @@
       width: 100%;
       padding: 16px;
       border-radius: var(--radius-md);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 0.95rem;
       text-decoration: none;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn-primary {
-      background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
-      color: white;
+      background: var(--gold-gradient);
+      color: #000;
       border: none;
-      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-      animation: pulseGlow 2s infinite;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+      transition: all 0.3s;
     }
 
-    .btn-primary:hover {
+    .btn-gold:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(217, 70, 239, 0.6);
+      box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6);
     }
 
     .btn-whatsapp {
-      background: #25d366;
-      color: white;
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
     }
 
-    .btn-whatsapp:hover {
-      background: #20ba5a;
-    }
-
-    @keyframes pulseGlow {
-      0% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
-      50% { box-shadow: 0 0 25px rgba(217, 70, 239, 0.7); }
-      100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
-    }
-
-    /* Sticky Bottom CTA */
-    .sticky-footer {
+    /* STICKY BOTTOM NAVBAR (Sesuai Screenshot 1, 2, 3, 4) */
+    .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
+      background: rgba(18, 19, 25, 0.95);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-gold);
       display: flex;
       justify-content: center;
-      background: rgba(11, 15, 25, 0.9);
-      backdrop-filter: blur(12px);
-      padding: 12px 16px;
-      border-top: 1px solid var(--border-color);
       z-index: 1000;
+      padding: 8px 0;
     }
 
-    .sticky-footer-inner {
+    .bottom-nav-inner {
       width: 100%;
       max-width: 480px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
 
-    /* Contact Card */
-    .contact-card {
-      text-align: center;
-      background: linear-gradient(180deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
-      border: 1px solid rgba(139, 92, 246, 0.3);
-    }
-
-    .contact-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-gold);
-      margin-top: 4px;
-    }
-
-    .contact-wa {
-      font-size: 1rem;
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.72rem;
       font-weight: 600;
-      color: #fff;
+      padding: 4px 12px;
+      transition: color 0.3s;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      color: var(--gold-primary);
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* FLOATING WHATSAPP BUTTON */
+    .floating-wa {
+      position: fixed;
+      bottom: 75px;
+      right: 20px;
+      width: 52px;
+      height: 52px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+      z-index: 999;
+      color: white;
+      text-decoration: none;
+      font-size: 1.6rem;
+    }
+
+    @media (max-width: 380px) {
+      .hero-title { font-size: 1.25rem; }
+      .price-text { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/6282347929491?text=Halo%20Jolin,%20saya%20ingin%20tanya%20mengenai%20VIMA" class="floating-wa" target="_blank" title="Chat WhatsApp">
+    💬
+  </a>
 
-    <!-- 1. HEADER PROFILE -->
-    <header class="profile-header">
-      <div class="avatar-wrapper">
-        <img class="avatar-img" src="https://bioqu.id/uploads/avatars/492c0085ee1c82b32da0d6e63e912444.png" alt="VIMA Logo" />
+  <div class="app-container">
+
+    <!-- 1. TOP BRAND BAR (vima.now style) -->
+    <header class="top-bar">
+      <a href="#" class="brand-logo">
+        <span class="brand-icon"></span>
+        <span class="brand-name">V I M A</span>
+      </a>
+      <div class="top-icons">
+        <div class="icon-btn">🔍</div>
+        <div class="icon-btn">👤</div>
       </div>
-      <h1 class="profile-title">VIMA HADIR! PLATFORM DRAMA PENDEK DIGITAL MASA DEPAN!</h1>
-      <p class="profile-subtitle">VIMA hadir membawa inovasi ekosistem drama pendek digital yang siap berkembang di Indonesia dan Asia.</p>
     </header>
 
-    <!-- 2. BANNERS -->
-    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/79a316ffa5ba635b6696d6bfb668414e.jpg" alt="VIMA Banner 1" />
-    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/7bcc97179542c7c1dc3a34ace3965c72.jpg" alt="VIMA Banner 2" />
-
-    <!-- 3. CAROUSEL SLIDER -->
-    <div class="carousel-container">
-      <div class="carousel-slide" id="carouselSlide">
-        <img src="https://bioqu.id/uploads/galleries/2370708/44d7c9d789fb771311ceea10f7fc5287.jpg" alt="Slide 1" />
-        <img src="https://bioqu.id/uploads/galleries/2370708/063722fe12a9b72860da24da58b38e6b.jpg" alt="Slide 2" />
-        <img src="https://bioqu.id/uploads/galleries/2370708/c89c805adff883c96a796b167603e84f.jpg" alt="Slide 3" />
+    <!-- 2. HERO FEATURED POSTER (Sesuai Screenshot 1 vima.now) -->
+    <section class="hero-poster-card shine-card lazy-reveal">
+      <img src="https://bioqu.id/uploads/galleries/2370708/79a316ffa5ba635b6696d6bfb668414e.jpg" alt="VIMA Main Drama" class="hero-poster-img" loading="lazy" />
+      <div class="hero-poster-overlay">
+        <span class="badge-pilihan">PILIHAN SPESIAL</span>
+        <h1 class="hero-title">VIMA HADIR! PLATFORM DRAMA PENDEK MASA DEPAN</h1>
+        <div class="tag-pills">
+          <span class="tag-pill">🎬 Short Drama</span>
+          <span class="tag-pill">🔥 Ekosistem Digital</span>
+          <span class="tag-pill">🌏 Indonesia & Asia</span>
+        </div>
+        <a href="https://vima.now/register?ref=WVLIYXX2ZY" class="btn-gold" target="_blank">
+          ▶ TONTON & DAFTAR SEKARANG
+        </a>
       </div>
-      <div class="carousel-nav">
-        <button class="carousel-btn" onclick="moveSlide(-1)">❮</button>
-        <button class="carousel-btn" onclick="moveSlide(1)">❯</button>
-      </div>
-    </div>
+    </section>
 
-    <!-- 4. REVOLUSI INDUSTRI -->
-    <div class="card">
-      <h2>Revolusi Baru Industri Drama Pendek Digital Indonesia</h2>
+    <!-- 3. CAROUSEL PROMO SLIDER -->
+    <section class="carousel-wrapper lazy-reveal">
+      <div class="carousel-slides" id="slider">
+        <img src="https://bioqu.id/uploads/galleries/2370708/44d7c9d789fb771311ceea10f7fc5287.jpg" alt="Slide 1" loading="lazy" />
+        <img src="https://bioqu.id/uploads/galleries/2370708/063722fe12a9b72860da24da58b38e6b.jpg" alt="Slide 2" loading="lazy" />
+        <img src="https://bioqu.id/uploads/galleries/2370708/c89c805adff883c96a796b167603e84f.jpg" alt="Slide 3" loading="lazy" />
+      </div>
+      <div class="carousel-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
+
+    <!-- 4. REVOLUSI INDUSTRI DRAMA (Card Besar Shimmer) -->
+    <section class="card-box shine-card lazy-reveal">
+      <h2>Revolusi Baru Drama Pendek</h2>
       <h3>"Dari Indonesia untuk Asia, dari Asia untuk Dunia."</h3>
-      <p>Selamat datang di era baru industri hiburan digital! <b>VIMA</b> hadir sebagai platform ekosistem drama pendek digital yang menggabungkan teknologi, kreativitas, dan komunitas dalam satu inovasi yang siap berkembang di Indonesia dan Asia.</p>
-      <p>Di tengah pesatnya pertumbuhan industri konten digital, VIMA hadir membawa visi besar untuk mendukung para kreator dan menghadirkan pengalaman hiburan yang lebih modern, interaktif, dan bernilai.</p>
-    </div>
+      <p>Selamat datang di era baru hiburan digital! <b>VIMA</b> menggabungkan teknologi, kreativitas, dan komunitas dalam satu platform terpadu yang berkembang pesat.</p>
+      <p>VIMA hadir membawa visi besar untuk mendukung para kreator serta memberikan pengalaman hiburan modern dan interaktif.</p>
+    </section>
 
-    <!-- 5. HOT NEWS -->
-    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/a9098e2607981d23a4e992b6d2bb3b68.jpg" alt="VIMA Media Cover" />
-    
-    <div class="card">
-      <span class="badge">HOT NEWS!</span>
-      <h2>VIMA DILIPUT MEDIA NASIONAL INDONESIA</h2>
-      <p>VIMA mendapatkan perhatian dari media nasional sebagai platform digital yang fokus membangun ekosistem drama pendek berbasis inovasi dan teknologi.</p>
-      <div class="quote-box">
-        "Saat dunia bergerak menuju ekonomi kreatif digital, VIMA hadir untuk menjadi bagian dari perubahan tersebut."
+    <!-- 5. GENRE & EKOSISTEM GRID (Inspirasi Screenshot 2) -->
+    <section class="lazy-reveal">
+      <h2 style="font-family:'Cinzel',serif; font-size:1.1rem; color:var(--gold-light); margin-bottom:12px;">GENRE & KATEGORI FAVORIT</h2>
+      <div class="genre-grid">
+        <div class="genre-card g1">
+          <div class="genre-title">MILIARDER</div>
+          <div class="genre-count">40 Drama</div>
+        </div>
+        <div class="genre-card g2">
+          <div class="genre-title">KARMA</div>
+          <div class="genre-count">52 Drama</div>
+        </div>
+        <div class="genre-card g3">
+          <div class="genre-title">DIREKTUR UTAMA</div>
+          <div class="genre-count">48 Drama</div>
+        </div>
+        <div class="genre-card g4">
+          <div class="genre-title">BALAS DENDAM</div>
+          <div class="genre-count">118 Drama</div>
+        </div>
+        <div class="genre-card g5">
+          <div class="genre-title">CEO & MODERN</div>
+          <div class="genre-count">102 Drama</div>
+        </div>
+        <div class="genre-card g6">
+          <div class="genre-title">IDENTITAS TERSEMBUNYI</div>
+          <div class="genre-count">87 Drama</div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 6. TENTANG VIMA -->
-    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/3580b5e039a58ff3d9ab80211a215099.jpg" alt="Tentang VIMA" />
-    
-    <div class="card">
-      <h2>Tentang VIMA</h2>
-      <p>VIMA merupakan platform digital yang berfokus pada pengembangan ekosistem drama pendek digital yang mengintegrasikan teknologi, kreativitas, dan komunitas dalam satu inovasi modern.</p>
-      
-      <div class="feature-grid">
-        <div class="feature-item">💻 Teknologi Digital</div>
-        <div class="feature-item">🎬 Industri Kreatif</div>
-        <div class="feature-item">🤝 Komunitas</div>
-        <div class="feature-item">🚀 Inovasi Konten</div>
-      </div>
-      <p style="margin-top: 12px;">VIMA memiliki visi untuk menghadirkan platform hiburan digital yang mampu bersaing di tingkat Indonesia, Asia, hingga pasar global.</p>
-    </div>
+    <!-- 6. HOT NEWS & COVER MEDIA -->
+    <section class="card-box shine-card lazy-reveal">
+      <img src="https://bioqu.id/uploads/galleries/2370708/a9098e2607981d23a4e992b6d2bb3b68.jpg" alt="VIMA Media Cover" style="width:100%; border-radius:10px; margin-bottom:12px;" loading="lazy" />
+      <span class="badge-gold">HOT NEWS</span>
+      <h2>VIMA DILIPUT MEDIA NASIONAL</h2>
+      <p>VIMA menjadi sorotan media nasional sebagai pionir platform digital drama pendek berbasis teknologi dan ekosistem kreatif terintegrasi.</p>
+    </section>
 
-    <!-- 7. SENIOR OFFICER -->
-    <div class="card" style="text-align: center;">
-      <span class="badge" style="background: linear-gradient(90deg, #6366f1, #a855f7);">SENIOR OFFICER</span>
-      <img src="https://bioqu.id/uploads/galleries/2371718/46e3c73e3022ca2d78b7501bae1c5287.jpg" alt="Dong Hyun" class="banner-img" style="margin: 12px 0;" />
-      <h2 style="justify-content: center;">DONG HYUN</h2>
-      <p style="color: var(--accent-gold); font-weight: 600;">Owner VIMA & Senior Officer</p>
-    </div>
+    <!-- 7. PROFIL SENIOR OFFICER -->
+    <section class="card-box shine-card lazy-reveal" style="text-align:center;">
+      <span class="badge-gold" style="background:linear-gradient(90deg,#6366f1,#a855f7); color:#fff;">SENIOR OFFICER</span>
+      <img src="https://bioqu.id/uploads/galleries/2371718/46e3c73e3022ca2d78b7501bae1c5287.jpg" alt="Dong Hyun - Owner VIMA" style="width:100%; border-radius:12px; margin:12px 0;" loading="lazy" />
+      <h2 style="justify-content:center; font-size:1.4rem;">DONG HYUN</h2>
+      <p style="color:var(--gold-primary); font-weight:700;">Owner & Senior Officer VIMA</p>
+    </section>
 
-    <!-- 8. MENGAPA MEMILIH VIMA & PELUANG -->
-    <div class="card">
-      <h2>Mengapa Memilih VIMA?</h2>
-      <ul class="check-list">
-        <li>🚀 <b>Inovasi Tanpa Batas:</b> Pengalaman hiburan modern mengikuti teknologi masa depan.</li>
-        <li>🤝 <b>Ekosistem Kuat:</b> Kolaborasi antara kreator, komunitas, dan teknologi.</li>
-        <li>📈 <b>Pertumbuhan Pesat:</b> Industri konten digital yang membuka berbagai peluang baru.</li>
-        <li>🌏 <b>Siap Go International:</b> Membawa konten lokal Indonesia ke pasar Asia & Global.</li>
-      </ul>
-    </div>
-
-    <!-- 9. SKEMA BONUS REBATE -->
-    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/055a7374836a6ae79102830e7d771b00.jpg" alt="Bonus VIMA" />
-    
-    <div class="card">
-      <h2>💰 BONUS REBATE DOWNLINE VIMA</h2>
-      <p>Setiap kali downline Anda memperoleh coin dari aktivitas mereka, Anda juga akan mendapatkan <b>Bonus Rebate Otomatis</b> sesuai level jaringan.</p>
-      
-      <div class="rebate-list">
-        <div class="rebate-item"><span>👑 Level 1</span> <b>5% Rebate</b></div>
-        <div class="rebate-item"><span>👑 Level 2</span> <b>3% Rebate</b></div>
-        <div class="rebate-item"><span>👑 Level 3</span> <b>2% Rebate</b></div>
-        <div class="rebate-item"><span>👑 Level 4 - 8</span> <b>1% Rebate</b></div>
-      </div>
-
-      <ul class="check-list">
-        <li>✅ Bonus otomatis setiap hari</li>
-        <li>✅ Penghasilan tambahan dari aktivitas downline</li>
-        <li>✅ Sistem transparan & real-time</li>
-        <li>✅ Tanpa batas potensi penghasilan</li>
-      </ul>
-    </div>
-
-    <!-- 10. FAQ SECTION -->
-    <div class="card">
-      <h2>Frequently Asked Questions (FAQ)</h2>
-      
-      <details>
-        <summary>Apakah VIMA legal?</summary>
-        <p>Silakan merujuk pada informasi resmi yang disediakan oleh VIMA melalui website dan kanal komunikasi resminya untuk mengetahui informasi terbaru mengenai legalitas dan operasional perusahaan.</p>
-      </details>
-
-      <details>
-        <summary>Apakah VIMA cocok untuk pemula?</summary>
-        <p>Ya. VIMA dapat menjadi sarana untuk mengenal perkembangan industri hiburan digital dan ekonomi kreatif modern.</p>
-      </details>
-
-      <details>
-        <summary>Apakah VIMA hanya untuk kreator?</summary>
-        <p>Tidak. VIMA terbuka untuk berbagai kalangan yang memiliki minat terhadap perkembangan dunia digital, baik kreator konten, entrepreneur, maupun komunitas digital.</p>
-      </details>
-    </div>
-
-    <!-- 11. KONTAK & BIMBINGAN -->
-    <div class="card contact-card">
-      <img src="https://bioqu.id/uploads/galleries/2076002/cf4cf338954c6626819bdcde5baa6762.png" class="banner-img" alt="Bimbingan" />
-      <p style="margin-top: 10px;">Untuk <b>bimbingan & konsultasi</b>, silakan hubungi kami:</p>
-      <div class="contact-name">Jolin Manalang</div>
-      <div class="contact-wa">WA : 0823-4792-9491</div>
-      
-      <a href="https://wa.me/6282347929491?text=Halo%20Jolin,%20saya%20ingin%20konsultasi%20mengenai%20VIMA" target="_blank" class="btn btn-whatsapp" style="margin-top: 14px;">
-        💬 CHAT VIA WHATSAPP
-      </a>
-    </div>
-
-    <!-- 12. SALURAN OFFICIAL -->
-    <div class="card" style="text-align: center;">
-      <h2>📢 OFFICIAL CHANNEL</h2>
-      <p>Ikuti Saluran VIMA di WhatsApp untuk mendapatkan update resmi dan informasi terbaru.</p>
-      <a href="https://whatsapp.com/channel/0029VbEhBJyIXnllwWOvwW1R" target="_blank" class="btn btn-whatsapp" style="margin-top: 12px; background: #075e54;">
-        ◉ IKUTI SALURAN VIMA ➔
-      </a>
-    </div>
-
-    <!-- 13. REGISTER CTA CARD -->
-    <div class="card" style="text-align: center; background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2)); border: 1px solid var(--accent-purple);">
-      <h2>GRATIS REGISTRASI!</h2>
-      <p>Bergabung bersama VIMA hari ini dan jadilah bagian dari ekosistem drama pendek digital yang berkembang di Indonesia, Asia, dan Dunia.</p>
-      <a href="https://vima.now/register?ref=WVLIYXX2ZY" target="_blank" class="btn btn-primary" style="margin-top: 12px;">
-        🚀 DAFTAR SEKARANG KLIK DISINI
-      </a>
-    </div>
-
-    <!-- FOOTER BANNER -->
-    <img class="banner-img" src="https://bioqu.id/uploads/galleries/2370708/ec8f1aab27e4f84ce90ca7b12a6d2ee7.jpg" alt="VIMA Footer" />
-
-  </div>
-
-  <!-- STICKY BOTTOM BUTTON FOR MOBILE -->
-  <div class="sticky-footer">
-    <div class="sticky-footer-inner">
-      <a href="https://vima.now/register?ref=WVLIYXX2ZY" target="_blank" class="btn btn-primary">
-        🚀 DAFTAR VIMA SEKARANG
-      </a>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT FOR CAROUSEL SLIDER -->
-  <script>
-    let currentSlide = 0;
-    const slideElement = document.getElementById('carouselSlide');
-    const totalSlides = slideElement.children.length;
-
-    function moveSlide(direction) {
-      currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-      slideElement.style.transform = `translateX(-${currentSlide * 100}%)`;
-    }
-
-    // Auto Play Carousel every 4 seconds
-    setInterval(() => {
-      moveSlide(1);
-    }, 4000);
-  </script>
-
-</body>
-        </html>
-        
+    <!-- 8. PAKET PREMIUM & BONUS REBATE (Inspirasi Screenshot 3) -->
+    <section class="package-card shine-card lazy-reveal">
+      <span class="badge-gold"
